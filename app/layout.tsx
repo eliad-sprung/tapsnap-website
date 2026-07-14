@@ -5,7 +5,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "TapSnap | Smart Payments & Tap-to-Pay",
+  title: "TapSnap LLC | Smart Payments & Tap-to-Pay",
   description: "Accept payments anywhere with just a tap. No hardware, no friction, no delays.",
   icons: {
     icon: [

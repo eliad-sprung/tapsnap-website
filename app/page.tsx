@@ -18,47 +18,39 @@ function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 }
 
 const values = [
-  { icon: Zap,       bg:"#F0FDF4", color:"#2DB84B", title:"Zero Hardware",     desc:"Your phone is the terminal. Start accepting payments today." },
-  { icon: Shield,    bg:"#F0FDF4", color:"#1FA83A", title:"Bank-Level Security",desc:"Every transaction encrypted. Every payment protected."         },
-  { icon: DollarSign,bg:"#F0FDF4", color:"#2DB84B", title:"No Hidden Fees",    desc:"What you see is what you pay. Simple, always."                  },
+  { icon: Zap,        bg:"#F0FDF4", color:"#2DB84B", title:"Zero Hardware",      desc:"Your phone is the terminal. Start accepting payments today without any extra devices."                        },
+  { icon: Shield,     bg:"#F0FDF4", color:"#1FA83A", title:"Bank-Grade Security", desc:"Every transaction encrypted. Every payment protected with zero raw card data stored on-site."             },
+  { icon: DollarSign, bg:"#F0FDF4", color:"#2DB84B", title:"No Hidden Fees",      desc:"What you see is what you pay. Clear, simple pricing with direct automated ACH deposits."                  },
 ];
 
 const steps = [
-  { n:"01", title:"Create Account",  desc:"Two minutes. No paperwork."          },
-  { n:"02", title:"Tap to Accept",   desc:"Your phone becomes a payment terminal." },
-  { n:"03", title:"Get Paid",        desc:"Daily ACH deposits. Automatic."        },
+  { n:"01", title:"Create Account", desc:"Two minutes. No complicated paperwork."                                        },
+  { n:"02", title:"Scan to Accept", desc:"Display your QR code or tap to accept payments instantly on any phone."        },
+  { n:"03", title:"Get Paid Fast",  desc:"Automatic daily ACH deposits directly to your business account."              },
+];
+
+const trust = [
+  { v:"Daily ACH",  l:"Settlements"  },
+  { v:"Real-Time",  l:"Verification" },
+  { v:"Instant QR", l:"Scan & Pay"   },
 ];
 
 export default function HomePage() {
   return (
     <>
-      {/* ── HERO ── */}
       <section className="hero-section">
         <div className="container" style={{ padding:"72px 24px", width:"100%" }}>
           <div className="grid-2">
             <div>
-              {/* Wordmark only in hero — headline already says Payments Made Simple */}
-              <div style={{ marginBottom: 24 }}>
-                <Image
-                  src="/logo-wordmark.png"
-                  alt="TapSnap"
-                  width={1184}
-                  height={210}
-                  style={{ width: 280, height: "auto" }}
-                  priority
-                />
+              <div style={{ marginBottom:28 }}>
+                <Image src="/logo-wordmark.png" alt="TapSnap" width={1184} height={210} style={{ width:240, height:"auto" }} priority />
               </div>
-
-              <h1 style={{ fontSize:"clamp(36px, 5vw, 58px)", marginBottom:16, marginTop:32 }}>
-                Payments Made<br />
-                <span style={{ color:"#2DB84B" }}>Simple.</span>
+              <h1 style={{ fontSize:"clamp(40px, 5.5vw, 64px)", marginBottom:18, lineHeight:1.05 }}>
+                Scan. Pay. Done.
               </h1>
-
-              <p style={{ fontSize:17, color:"#64748B", lineHeight:1.7, marginBottom:36, maxWidth:420 }}>
-                Accept payments anywhere. Just tap.<br />
-                No hardware. No friction. No delays.
+              <p style={{ fontSize:17, color:"#64748B", lineHeight:1.75, marginBottom:36, maxWidth:440 }}>
+                Fast and Secure. Accept instant payments with a simple QR scan. No card readers, no hardware, no friction.
               </p>
-
               <div style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:44 }}>
                 <Link href="/customers" className="btn-green" style={{ fontSize:15, padding:"13px 28px" }}>
                   Get Started <ArrowRight size={16}/>
@@ -67,17 +59,15 @@ export default function HomePage() {
                   See How It Works
                 </Link>
               </div>
-
               <div style={{ display:"flex", gap:32, paddingTop:24, borderTop:"1px solid #E2E8F0", flexWrap:"wrap" }}>
-                {[{v:"Daily ACH", l:"Settlements"},{v:"Real-Time", l:"Verification"},{v:"Apple & Google", l:"Wallet Support"}].map(s => (
+                {trust.map(s => (
                   <div key={s.l}>
-                    <p style={{ fontSize:14, fontWeight:700, color:"#1A1A1A" }}>{s.v}</p>
+                    <p style={{ fontSize:14, fontWeight:700, color:"#1A1A1A", lineHeight:1.3 }}>{s.v}</p>
                     <p style={{ fontSize:12, color:"#94A3B8", marginTop:2 }}>{s.l}</p>
                   </div>
                 ))}
               </div>
             </div>
-
             <div className="hero-phone" style={{ display:"flex", justifyContent:"center", alignItems:"center" }}>
               <HeroPhone />
             </div>
@@ -85,13 +75,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── WHY TAPSNAP — 3 cards, zero fluff ── */}
       <section className="section-soft">
         <div className="container">
           <FadeUp>
             <div className="section-header">
               <span className="eyebrow">Why TapSnap</span>
-              <h2>Everything you need.<br />Nothing you don't.</h2>
+              <h2>Everything you need. Nothing you do not.</h2>
             </div>
           </FadeUp>
           <div className="grid-3">
@@ -101,7 +90,7 @@ export default function HomePage() {
                   <div style={{ width:44, height:44, borderRadius:12, background:v.bg, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:18 }}>
                     <v.icon size={20} color={v.color}/>
                   </div>
-                  <h3 style={{ marginBottom:8 }}>{v.title}</h3>
+                  <h3 style={{ marginBottom:10 }}>{v.title}</h3>
                   <p style={{ fontSize:14 }}>{v.desc}</p>
                 </div>
               </FadeUp>
@@ -110,13 +99,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS — stripped back ── */}
       <section className="section">
         <div className="container">
           <FadeUp>
             <div className="section-header">
               <span className="eyebrow">How It Works</span>
-              <h2>Up and running<br />in 3 steps.</h2>
+              <h2>Up and running in 3 steps.</h2>
             </div>
           </FadeUp>
           <div className="grid-3">
@@ -126,23 +114,20 @@ export default function HomePage() {
                   <div style={{ width:48, height:48, borderRadius:"50%", background: i===0?"#1A1A1A": i===1?"#155C26":"#2DB84B", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:20, boxShadow:"0 4px 14px rgba(15,23,42,0.12)" }}>
                     <span style={{ fontSize:13, fontWeight:800, color:"#fff" }}>{s.n}</span>
                   </div>
-                  <h3 style={{ marginBottom:8 }}>{s.title}</h3>
+                  <h3 style={{ marginBottom:9 }}>{s.title}</h3>
                   <p style={{ fontSize:14 }}>{s.desc}</p>
                 </div>
               </FadeUp>
             ))}
           </div>
           <FadeUp delay={260}>
-            <div style={{ textAlign:"center", marginTop:40 }}>
-              <Link href="/how-it-works" className="btn-ghost">
-                Full Details <ArrowRight size={14}/>
-              </Link>
+            <div style={{ textAlign:"center", marginTop:44 }}>
+              <Link href="/how-it-works" className="btn-ghost">Full Details <ArrowRight size={14}/></Link>
             </div>
           </FadeUp>
         </div>
       </section>
 
-      {/* ── COMPLIANCE — single line ── */}
       <div className="strip">
         <div className="container">
           <div style={{ display:"flex", flexWrap:"wrap", gap:24, justifyContent:"center", alignItems:"center" }}>
@@ -156,19 +141,14 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ── CTA — one clear action ── */}
       <section className="section">
         <div className="container">
           <FadeUp>
             <div className="cta-band">
               <div style={{ position:"absolute", top:-60, right:-60, width:220, height:220, borderRadius:"50%", background:"rgba(45,184,75,0.14)", pointerEvents:"none" }}/>
               <div style={{ position:"relative" }}>
-                <h2 style={{ color:"#fff", marginBottom:12, fontSize:"clamp(22px, 3.5vw, 36px)" }}>
-                  Ready to get paid?
-                </h2>
-                <p style={{ color:"rgba(255,255,255,0.5)", fontSize:15, marginBottom:28 }}>
-                  Set up in minutes. No hardware needed.
-                </p>
+                <h2 style={{ color:"#fff", marginBottom:10, fontSize:"clamp(24px, 3.5vw, 38px)" }}>Ready to get paid?</h2>
+                <p style={{ color:"rgba(255,255,255,0.55)", fontSize:15, marginBottom:28 }}>Set up in minutes. No hardware needed.</p>
                 <Link href="/customers" className="btn-green" style={{ fontSize:15, padding:"13px 32px" }}>
                   Get Started <ArrowRight size={16}/>
                 </Link>
