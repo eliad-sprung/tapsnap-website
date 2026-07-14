@@ -108,7 +108,7 @@ function BalanceCard() {
         {/* mini brand mark */}
         <div style={{ background:"rgba(255,255,255,0.1)", borderRadius:7, padding:"4px 8px", display:"flex", alignItems:"center", gap:3 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-wordmark.png" alt="TapSnap" style={{ height:14, width:"auto", filter:"brightness(0) invert(1)", display:"block" }} />
+          <img src="/logo@2x.png" alt="TapSnap" style={{ height:20, width:"auto", filter:"brightness(0) invert(1)", display:"block" }} />
         </div>
       </div>
     </div>
@@ -222,7 +222,7 @@ export default function HeroPhone() {
         {/* App header */}
         <div style={{ padding:"3px 13px 13px", display:"flex", alignItems:"center", gap:7 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-wordmark.png" alt="TapSnap" style={{ height:18, width:"auto", filter:"brightness(0) invert(1)", display:"block" }} />
+          <img src="/logo@2x.png" alt="TapSnap" style={{ height:24, width:"auto", filter:"brightness(0) invert(1)", display:"block" }} />
         </div>
 
         <BalanceCard />

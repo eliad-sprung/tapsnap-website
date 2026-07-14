@@ -3,24 +3,21 @@ import Image from "next/image";
 /**
  * TapSnap Logo — uses official PNG files.
  *
- * Files in /public:
- *   logo-wordmark.png     — icon + TAPSNAP text, no tagline (1184×210)
- *   logo-icon-only.png    — card icon only (408×210)
- *   logo@2x.png           — full logo with tagline (2x retina)
+ * Default: full logo WITH "Payments Made Simple" tagline (logo@2x.png)
+ * iconOnly: just the card icon (logo-icon-only.png)
  *
- * variant="dark" inverts colors for dark backgrounds
+ * Full logo aspect ratio: 1184/300 = 3.947
+ * Icon-only aspect ratio: 408/210 = 1.943
  */
 
 interface LogoProps {
   variant?: "light" | "dark";
   size?: "xs" | "sm" | "md" | "lg";
   iconOnly?: boolean;
-  showTagline?: boolean;
 }
 
-// Height in px — wordmark aspect ratio = 1184/210 = 5.638
-// Icon-only aspect ratio = 408/210 = 1.943
-const heights = { xs: 24, sm: 36, md: 48, lg: 64 };
+// Height in px
+const heights = { xs: 28, sm: 40, md: 54, lg: 72 };
 
 export default function TapSnapLogo({
   variant = "light",
@@ -28,13 +25,12 @@ export default function TapSnapLogo({
   iconOnly = false,
 }: LogoProps) {
   const h = heights[size];
-  
+
   const invertStyle: React.CSSProperties = variant === "dark"
     ? { filter: "brightness(0) invert(1)" }
     : {};
 
   if (iconOnly) {
-    // Icon-only: 408×210 → aspect 1.943
     const w = Math.round(h * 1.943);
     return (
       <Image
@@ -48,11 +44,11 @@ export default function TapSnapLogo({
     );
   }
 
-  // Wordmark (no tagline): 1184×210 → aspect 5.638
-  const w = Math.round(h * 5.638);
+  // Full logo with tagline — aspect 3.947
+  const w = Math.round(h * 3.947);
   return (
     <Image
-      src="/logo-wordmark.png"
+      src="/logo@2x.png"
       alt="TapSnap — Payments Made Simple"
       width={w * 2}
       height={h * 2}

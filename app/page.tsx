@@ -37,14 +37,14 @@ export default function HomePage() {
         <div className="container" style={{ padding:"72px 24px", width:"100%" }}>
           <div className="grid-2">
             <div>
-              {/* Official logo — wordmark only, no tagline (headline says it) */}
+              {/* Wordmark only in hero — headline already says Payments Made Simple */}
               <div style={{ marginBottom: 24 }}>
                 <Image
                   src="/logo-wordmark.png"
                   alt="TapSnap"
                   width={1184}
                   height={210}
-                  style={{ width: 260, height: "auto" }}
+                  style={{ width: 280, height: "auto" }}
                   priority
                 />
               </div>
