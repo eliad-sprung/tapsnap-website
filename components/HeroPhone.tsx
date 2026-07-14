@@ -1,169 +1,216 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Smartphone, ChevronRight, Zap, CheckCircle } from "lucide-react";
+import { Zap, CheckCircle, ShieldCheck } from "lucide-react";
 
-/* ─── tiny CSS keyframes injected once ─────────────────── */
-const KEYFRAMES = `
+const KF = `
 @keyframes floatPhone {
-  0%,100% { transform: translateY(0px) rotate(-1.5deg); }
-  50%      { transform: translateY(-14px) rotate(-1.5deg); }
+  0%,100% { transform: translateY(0px) rotate(-1.2deg); }
+  50%      { transform: translateY(-13px) rotate(-1.2deg); }
 }
-@keyframes floatPillL {
+@keyframes floatL {
   0%,100% { transform: translateY(0px); }
-  50%      { transform: translateY(-10px); }
+  50%      { transform: translateY(-9px); }
 }
-@keyframes floatPillR {
+@keyframes floatR {
   0%,100% { transform: translateY(0px); }
-  50%      { transform: translateY(10px); }
+  50%      { transform: translateY(9px); }
 }
-@keyframes pulseGlow {
-  0%,100% { opacity: 0.3; transform: scale(1); }
-  50%      { opacity: 0.55; transform: scale(1.06); }
+@keyframes floatT {
+  0%,100% { transform: translateY(0px); }
+  50%      { transform: translateY(-6px); }
 }
-@keyframes shimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
+@keyframes glowPulse {
+  0%,100% { opacity: 0.28; transform: scale(1); }
+  50%      { opacity: 0.48; transform: scale(1.05); }
 }
-@keyframes fadeSlideIn {
-  from { opacity:0; transform:translateY(8px); }
+@keyframes txIn {
+  from { opacity:0; transform:translateY(6px); }
   to   { opacity:1; transform:translateY(0); }
+}
+@keyframes scanLine {
+  0%,100% { top: 12%; opacity: 0.9; }
+  50%      { top: 78%; opacity: 0.7; }
 }
 `;
 
-/* ─── Wallet card component ─────────────────────────────── */
-function WalletCard() {
+/* ── QR Code SVG (real-looking pattern) ────────────────── */
+function QRCode({ size = 80 }: { size?: number }) {
+  // 7×7 grid of cells — simplified but visually authentic
+  const cells = [
+    [1,1,1,1,1,1,1, 0, 1,0,1,0,1, 0, 1,1,1,1,1,1,1],
+    [1,0,0,0,0,0,1, 0, 0,1,0,0,0, 0, 1,0,0,0,0,0,1],
+    [1,0,1,1,1,0,1, 0, 1,0,1,0,1, 0, 1,0,1,1,1,0,1],
+    [1,0,1,1,1,0,1, 0, 0,1,1,0,0, 0, 1,0,1,1,1,0,1],
+    [1,0,1,1,1,0,1, 0, 1,0,0,1,1, 0, 1,0,1,1,1,0,1],
+    [1,0,0,0,0,0,1, 0, 0,0,1,1,0, 0, 1,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1, 0, 1,0,1,0,1, 0, 1,1,1,1,1,1,1],
+    [0,0,0,0,0,0,0, 0, 0,1,0,0,1, 0, 0,0,0,0,0,0,0],
+    [1,1,0,1,1,0,1, 1, 0,1,1,0,1, 1, 0,1,0,0,1,1,0],
+    [0,0,1,0,0,1,0, 0, 1,0,0,1,0, 0, 1,0,1,1,0,0,1],
+    [1,0,1,1,0,1,1, 0, 0,1,1,0,1, 0, 1,1,0,1,0,1,0],
+    [0,1,0,0,1,0,0, 1, 1,0,0,1,0, 1, 0,0,1,0,1,0,1],
+    [1,1,1,0,1,1,0, 0, 1,0,1,1,1, 0, 1,0,0,1,1,0,1],
+    [0,0,0,0,0,0,0, 1, 0,1,0,0,0, 1, 0,1,0,0,0,1,0],
+    [1,1,1,1,1,1,1, 0, 1,0,1,0,1, 0, 1,1,0,1,0,0,1],
+    [1,0,0,0,0,0,1, 0, 0,0,0,1,0, 0, 1,0,1,0,1,1,0],
+    [1,0,1,1,1,0,1, 1, 1,1,0,0,1, 1, 0,1,1,0,0,1,1],
+    [1,0,0,0,0,0,1, 0, 0,0,1,1,0, 0, 1,0,0,1,0,0,1],
+    [1,1,1,1,1,1,1, 1, 1,0,1,0,0, 1, 0,1,1,0,1,0,0],
+  ];
+  const cols = 19;
+  const rows = cells.length;
+  const cell = size / cols;
+
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} xmlns="http://www.w3.org/2000/svg">
+      <rect width={size} height={size} fill="white" rx="3"/>
+      {cells.map((row, ri) =>
+        row.map((v, ci) =>
+          v === 1 ? (
+            <rect
+              key={`${ri}-${ci}`}
+              x={ci * cell + 0.5}
+              y={ri * cell + 0.5}
+              width={cell - 0.5}
+              height={cell - 0.5}
+              fill="#0F172A"
+              rx={cell > 3 ? 0.8 : 0}
+            />
+          ) : null
+        )
+      )}
+    </svg>
+  );
+}
+
+/* ── Balance card ───────────────────────────────────────── */
+function BalanceCard() {
   return (
     <div style={{
-      margin: "0 12px 10px",
-      borderRadius: 18,
-      padding: "20px 18px 18px",
-      background: "linear-gradient(135deg, #1E3A8A 0%, #0066FF 100%)",
+      margin: "0 11px 10px",
+      borderRadius: 16,
+      padding: "18px 16px 14px",
+      background: "linear-gradient(135deg, #0F172A 0%, #155C26 100%)",
       position: "relative",
       overflow: "hidden",
-      boxShadow: "0 8px 28px rgba(0,102,255,0.35)",
+      boxShadow: "0 6px 24px rgba(16,185,129,0.25)",
     }}>
-      {/* decorative circles */}
-      <div style={{ position:"absolute",top:-28,right:-28,width:110,height:110,borderRadius:"50%",background:"rgba(255,255,255,0.07)" }}/>
-      <div style={{ position:"absolute",bottom:-20,left:-20,width:70,height:70,borderRadius:"50%",background:"rgba(255,255,255,0.05)" }}/>
-
-      <p style={{ fontSize:10,color:"rgba(255,255,255,0.6)",fontWeight:600,marginBottom:3,letterSpacing:"0.04em",position:"relative" }}>AVAILABLE BALANCE</p>
-      <p style={{ fontSize:30,fontWeight:800,color:"#fff",letterSpacing:"-0.04em",lineHeight:1,marginBottom:16,position:"relative" }}>$248.00</p>
-
-      <div style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-end",position:"relative" }}>
+      <div style={{ position:"absolute", top:-24, right:-24, width:96, height:96, borderRadius:"50%", background:"rgba(16,185,129,0.12)" }}/>
+      <div style={{ position:"absolute", bottom:-16, left:-16, width:60, height:60, borderRadius:"50%", background:"rgba(255,255,255,0.04)" }}/>
+      <p style={{ fontSize:9, color:"rgba(255,255,255,0.55)", fontWeight:600, letterSpacing:"0.06em", marginBottom:3, position:"relative" }}>AVAILABLE BALANCE</p>
+      <p style={{ fontSize:28, fontWeight:800, color:"#fff", letterSpacing:"-0.04em", lineHeight:1, marginBottom:14, position:"relative" }}>$248.00</p>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", position:"relative" }}>
         <div>
-          <p style={{ fontSize:8,color:"rgba(255,255,255,0.45)",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:2 }}>Card Holder</p>
-          <p style={{ fontSize:11,fontWeight:700,color:"#fff" }}>J. CUSTOMER</p>
+          <p style={{ fontSize:8, color:"rgba(255,255,255,0.38)", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:1 }}>Holder</p>
+          <p style={{ fontSize:10, fontWeight:700, color:"#fff" }}>J. CUSTOMER</p>
         </div>
-        {/* Mini TapSnap mark */}
-        <div style={{
-          background:"rgba(255,255,255,0.15)",
-          borderRadius:8,
-          padding:"5px 9px",
-          display:"flex",
-          alignItems:"center",
-          gap:3,
-        }}>
-          <svg width="14" height="14" viewBox="0 0 44 44" fill="none">
-            <rect x="2" y="2" width="40" height="40" rx="10" stroke="rgba(255,255,255,0.8)" strokeWidth="2.5"/>
-            <path d="M14 22 Q14 16 19 12.5" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-            <path d="M14 22 Q14 28 19 31.5" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-            <path d="M20 22 Q20 14 26 9.5" stroke="#7EB2FF" strokeWidth="2.2" strokeLinecap="round"/>
-            <path d="M20 22 Q20 30 26 34.5" stroke="#7EB2FF" strokeWidth="2.2" strokeLinecap="round"/>
+        {/* mini brand mark */}
+        <div style={{ background:"rgba(255,255,255,0.1)", borderRadius:7, padding:"4px 8px", display:"flex", alignItems:"center", gap:3 }}>
+          <svg width="18" height="14" viewBox="0 0 110 86" fill="none">
+            <path d="M 68 7 H 20 Q 6 7 6 20 V 66 Q 6 79 20 79 H 68" stroke="white" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            <rect x="14" y="22" width="38" height="42" rx="6" stroke="white" strokeWidth="5" fill="none"/>
+            <path d="M 62 34 A 14 14 0 0 1 62 52" stroke="#2DB84B" strokeWidth="6" strokeLinecap="round" fill="none"/>
+            <path d="M 73 25 A 24 24 0 0 1 73 61" stroke="#2DB84B" strokeWidth="6" strokeLinecap="round" fill="none"/>
           </svg>
-          <span style={{ fontSize:9,fontWeight:800,color:"#fff",letterSpacing:"-0.01em" }}>TAP</span>
-          <span style={{ fontSize:9,fontWeight:800,color:"#93C5FD" }}>SNAP</span>
+          <span style={{ fontSize:8, fontWeight:800, color:"#fff" }}>TAP</span>
+          <span style={{ fontSize:8, fontWeight:800, color:"#2DB84B" }}>SNAP</span>
         </div>
       </div>
     </div>
   );
 }
 
-/* ─── QR tap row ─────────────────────────────────────────── */
-function QRRow() {
+/* ── QR scan card ───────────────────────────────────────── */
+function QRCard() {
   return (
     <div style={{
-      margin:"0 12px 10px",
-      borderRadius:13,
-      padding:"13px 14px",
-      background:"rgba(0,102,255,0.08)",
-      border:"1px solid rgba(0,102,255,0.18)",
-      display:"flex",
-      alignItems:"center",
-      gap:11,
+      margin: "0 11px 10px",
+      borderRadius: 14,
+      padding: "14px 13px",
+      background: "#F0FDF2",
+      border: "1.5px solid #93E4A4",
+      display: "flex",
+      alignItems: "center",
+      gap: 12,
+      position: "relative",
+      overflow: "hidden",
     }}>
-      <div style={{ width:38,height:38,borderRadius:10,background:"rgba(0,102,255,0.14)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>
-        <Smartphone size={17} color="#0066FF" />
+      {/* QR code */}
+      <div style={{ flexShrink:0, borderRadius:8, overflow:"hidden", border:"1.5px solid #C8F5D0" }}>
+        <QRCode size={52} />
       </div>
       <div style={{ flex:1 }}>
-        <p style={{ fontSize:12,fontWeight:700,color:"#fff",marginBottom:1 }}>Scan to Pay</p>
-        <p style={{ fontSize:10,color:"#64748B" }}>Show QR at checkout</p>
+        <p style={{ fontSize:11, fontWeight:700, color:"#1A6B2F", marginBottom:2 }}>Scan to Pay</p>
+        <p style={{ fontSize:9, color:"#6B7280", lineHeight:1.4 }}>Show this at checkout — no card needed</p>
+        {/* animated scan line */}
+        <div style={{ marginTop:6, height:3, borderRadius:2, background:"#C8F5D0", overflow:"hidden", position:"relative" }}>
+          <div style={{
+            position:"absolute", height:"100%", width:"30%",
+            background:"linear-gradient(90deg, transparent, #2DB84B, transparent)",
+            animation:"scanBar 1.8s ease-in-out infinite",
+          }}/>
+        </div>
       </div>
-      <ChevronRight size={13} color="#0066FF" />
     </div>
   );
 }
 
-/* ─── Transaction row ────────────────────────────────────── */
+/* ── Transaction row ────────────────────────────────────── */
 function TxRow({ name, amount, sub, positive, delay }: { name:string; amount:string; sub:string; positive:boolean; delay:number }) {
   return (
     <div style={{
       display:"flex", justifyContent:"space-between", alignItems:"center",
-      padding:"8px 0",
-      borderBottom:"1px solid rgba(255,255,255,0.05)",
-      animation:`fadeSlideIn 0.4s ease ${delay}ms both`,
+      padding:"7px 0", borderBottom:"1px solid rgba(255,255,255,0.05)",
+      animation:`txIn 0.4s ease ${delay}ms both`,
     }}>
-      <div style={{ display:"flex", alignItems:"center", gap:9 }}>
-        <div style={{
-          width:28, height:28, borderRadius:8,
-          background: positive ? "rgba(16,185,129,0.12)" : "rgba(0,102,255,0.12)",
-          display:"flex", alignItems:"center", justifyContent:"center",
-        }}>
-          <div style={{ width:7,height:7,borderRadius:"50%",background: positive ? "#10B981" : "#0066FF" }} />
+      <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+        <div style={{ width:26, height:26, borderRadius:7, background: positive ? "rgba(16,185,129,0.14)" : "rgba(255,255,255,0.07)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <div style={{ width:7, height:7, borderRadius:"50%", background: positive ? "#2DB84B" : "#82DEAD" }}/>
         </div>
         <div>
-          <p style={{ fontSize:11,fontWeight:600,color:"#F1F5F9" }}>{name}</p>
-          <p style={{ fontSize:9,color:"#475569" }}>{sub}</p>
+          <p style={{ fontSize:10, fontWeight:600, color:"#F1F5F9" }}>{name}</p>
+          <p style={{ fontSize:8, color:"#475569" }}>{sub}</p>
         </div>
       </div>
-      <p style={{ fontSize:11,fontWeight:700,color: positive ? "#10B981" : "#E2E8F0" }}>{amount}</p>
+      <p style={{ fontSize:10, fontWeight:700, color: positive ? "#2DB84B" : "#E2E8F0" }}>{amount}</p>
     </div>
   );
 }
 
-/* ─── Main HeroPhone ─────────────────────────────────────── */
+/* ── Main HeroPhone ─────────────────────────────────────── */
 export default function HeroPhone() {
   const injected = useRef(false);
   useEffect(() => {
-    if (injected.current) return;
-    injected.current = true;
-    const style = document.createElement("style");
-    style.textContent = KEYFRAMES;
-    document.head.appendChild(style);
+    if (injected.current) return; injected.current = true;
+    const el = document.createElement("style");
+    el.textContent = KF + `
+      @keyframes scanBar {
+        0%,100%{left:-30%} 50%{left:100%}
+      }
+    `;
+    document.head.appendChild(el);
   }, []);
 
   return (
-    <div style={{ position:"relative", display:"flex", justifyContent:"center", alignItems:"center", minHeight:560, userSelect:"none" }}>
+    <div style={{ position:"relative", display:"flex", justifyContent:"center", alignItems:"center", minHeight:580, userSelect:"none" }}>
 
-      {/* ── Ambient glow ── */}
+      {/* Ambient glow */}
       <div style={{
-        position:"absolute",
-        top:"50%", left:"50%",
-        transform:"translate(-50%,-50%)",
-        width:360, height:360,
-        borderRadius:"50%",
-        background:"radial-gradient(circle, rgba(0,102,255,0.13) 0%, transparent 70%)",
-        animation:"pulseGlow 4s ease-in-out infinite",
+        position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)",
+        width:340, height:340, borderRadius:"50%",
+        background:"radial-gradient(circle, rgba(16,185,129,0.11) 0%, transparent 70%)",
+        animation:"glowPulse 4s ease-in-out infinite",
         pointerEvents:"none",
-      }} />
+      }}/>
 
-      {/* ── Phone shell ── */}
+      {/* Phone shell */}
       <div style={{
-        width:252,
+        width:248,
         borderRadius:40,
         background:"#0B1120",
         border:"7px solid #1E293B",
-        boxShadow:"0 40px 100px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.05)",
+        boxShadow:"0 40px 100px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04)",
         overflow:"hidden",
         display:"flex",
         flexDirection:"column",
@@ -171,104 +218,73 @@ export default function HeroPhone() {
         position:"relative",
         zIndex:2,
       }}>
-
         {/* Status bar */}
-        <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 18px 8px" }}>
-          <span style={{ fontSize:11,fontWeight:600,color:"#64748B" }}>9:41</span>
-          <div style={{ width:76,height:16,borderRadius:10,background:"#1E293B" }} />
-          <span style={{ fontSize:9,color:"#475569" }}>●●●</span>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"13px 16px 7px" }}>
+          <span style={{ fontSize:10, fontWeight:600, color:"#64748B" }}>9:41</span>
+          <div style={{ width:72, height:15, borderRadius:9, background:"#1E293B" }}/>
+          <span style={{ fontSize:8, color:"#475569" }}>●●●</span>
         </div>
 
         {/* App header */}
-        <div style={{ padding:"4px 14px 14px",display:"flex",alignItems:"center",gap:8 }}>
-          <svg width="22" height="22" viewBox="0 0 44 44" fill="none">
-            <rect x="2" y="2" width="40" height="40" rx="10" stroke="white" strokeWidth="2.5"/>
-            <path d="M14 22 Q14 16 19 12.5" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-            <path d="M14 22 Q14 28 19 31.5" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-            <path d="M20 22 Q20 14 26 9.5" stroke="#4A9AFF" strokeWidth="2.2" strokeLinecap="round"/>
-            <path d="M20 22 Q20 30 26 34.5" stroke="#4A9AFF" strokeWidth="2.2" strokeLinecap="round"/>
-            <path d="M26 22 Q26 12 33 7" stroke="#4A9AFF" strokeWidth="2.2" strokeLinecap="round" opacity="0.45"/>
-            <path d="M26 22 Q26 32 33 37" stroke="#4A9AFF" strokeWidth="2.2" strokeLinecap="round" opacity="0.45"/>
+        <div style={{ padding:"3px 13px 13px", display:"flex", alignItems:"center", gap:7 }}>
+          <svg width="26" height="20" viewBox="0 0 110 86" fill="none">
+            <path d="M 68 7 H 20 Q 6 7 6 20 V 66 Q 6 79 20 79 H 68" stroke="white" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            <rect x="14" y="22" width="38" height="42" rx="6" stroke="white" strokeWidth="5" fill="none"/>
+            <path d="M 62 34 A 14 14 0 0 1 62 52" stroke="#2DB84B" strokeWidth="6" strokeLinecap="round" fill="none"/>
+            <path d="M 73 25 A 24 24 0 0 1 73 61" stroke="#2DB84B" strokeWidth="6" strokeLinecap="round" fill="none"/>
+            <path d="M 84 16 A 34 34 0 0 1 84 70" stroke="#2DB84B" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.5"/>
           </svg>
-          <span style={{ fontSize:14,fontWeight:800,letterSpacing:"-0.02em",color:"#fff" }}>TAP<span style={{ color:"#4A9AFF" }}>SNAP</span></span>
+          <span style={{ fontSize:13, fontWeight:800, letterSpacing:"-0.02em", color:"#fff" }}>
+            TAP<span style={{ color:"#2DB84B" }}>SNAP</span>
+          </span>
         </div>
 
-        {/* Wallet card */}
-        <WalletCard />
-
-        {/* QR row */}
-        <QRRow />
+        <BalanceCard />
+        <QRCard />
 
         {/* Transactions */}
-        <div style={{ padding:"4px 14px 16px" }}>
-          <p style={{ fontSize:9,fontWeight:600,color:"#334155",textTransform:"uppercase",letterSpacing:"0.09em",marginBottom:6 }}>Recent</p>
-          <TxRow name="Green Leaf Co." amount="-$52.00"  sub="Today"     positive={false} delay={0}   />
-          <TxRow name="Balance Load"   amount="+$300.00" sub="Yesterday" positive={true}  delay={80}  />
-          <TxRow name="City Dispensary"amount="-$88.00"  sub="Mon"       positive={false} delay={160} />
+        <div style={{ padding:"2px 13px 14px" }}>
+          <p style={{ fontSize:8, fontWeight:600, color:"#334155", textTransform:"uppercase", letterSpacing:"0.09em", marginBottom:5 }}>Recent</p>
+          <TxRow name="Green Leaf Co."   amount="-$52.00"  sub="Today"     positive={false} delay={0}  />
+          <TxRow name="Balance Load"     amount="+$300.00" sub="Yesterday" positive={true}  delay={70} />
+          <TxRow name="City Dispensary"  amount="-$88.00"  sub="Mon"       positive={false} delay={140}/>
         </div>
       </div>
 
-      {/* ── Floating pill: Non-Custodial (left) ── */}
+      {/* Pill: Non-Custodial */}
       <div style={{
-        position:"absolute",
-        left:-8,
-        top:"22%",
-        background:"#fff",
-        borderRadius:12,
-        padding:"10px 14px",
-        boxShadow:"0 6px 28px rgba(15,23,42,0.14)",
-        border:"1px solid #E2E8F0",
-        display:"flex",
-        alignItems:"center",
-        gap:8,
-        animation:"floatPillL 3.8s ease-in-out infinite",
-        zIndex:3,
-        whiteSpace:"nowrap",
+        position:"absolute", left:-10, top:"20%",
+        background:"#fff", borderRadius:12, padding:"9px 13px",
+        boxShadow:"0 4px 20px rgba(15,23,42,0.12)", border:"1px solid #E2E8F0",
+        display:"flex", alignItems:"center", gap:7,
+        animation:"floatL 3.8s ease-in-out infinite", zIndex:3, whiteSpace:"nowrap",
       }}>
-        <div style={{ width:8,height:8,borderRadius:"50%",background:"#10B981",flexShrink:0 }} />
-        <span style={{ fontSize:12,fontWeight:700,color:"#0F172A" }}>Non-Custodial</span>
+        <div style={{ width:8,height:8,borderRadius:"50%",background:"#2DB84B" }}/>
+        <span style={{ fontSize:12,fontWeight:700,color:"#0F172A",fontFamily:"'Inter',sans-serif" }}>Non-Custodial</span>
       </div>
 
-      {/* ── Floating pill: Instant Settle (right) ── */}
+      {/* Pill: Instant Settle */}
       <div style={{
-        position:"absolute",
-        right:-12,
-        bottom:"26%",
-        background:"#fff",
-        borderRadius:12,
-        padding:"10px 14px",
-        boxShadow:"0 6px 28px rgba(15,23,42,0.14)",
-        border:"1px solid #E2E8F0",
-        display:"flex",
-        alignItems:"center",
-        gap:8,
-        animation:"floatPillR 4.4s ease-in-out infinite",
-        zIndex:3,
-        whiteSpace:"nowrap",
+        position:"absolute", right:-14, bottom:"24%",
+        background:"#fff", borderRadius:12, padding:"9px 13px",
+        boxShadow:"0 4px 20px rgba(15,23,42,0.12)", border:"1px solid #E2E8F0",
+        display:"flex", alignItems:"center", gap:7,
+        animation:"floatR 4.4s ease-in-out infinite", zIndex:3, whiteSpace:"nowrap",
       }}>
-        <Zap size={12} color="#0066FF" fill="#0066FF" />
-        <span style={{ fontSize:12,fontWeight:700,color:"#0F172A" }}>Instant Settle</span>
+        <Zap size={11} color="#2DB84B" fill="#2DB84B"/>
+        <span style={{ fontSize:12,fontWeight:700,color:"#0F172A",fontFamily:"'Inter',sans-serif" }}>Instant Settle</span>
       </div>
 
-      {/* ── Floating pill: Bank-Grade (top right) ── */}
+      {/* Pill: Bank-Grade */}
       <div style={{
-        position:"absolute",
-        right:4,
-        top:"12%",
-        background:"#fff",
-        borderRadius:12,
-        padding:"9px 13px",
-        boxShadow:"0 4px 20px rgba(15,23,42,0.10)",
-        border:"1px solid #E2E8F0",
-        display:"flex",
-        alignItems:"center",
-        gap:7,
-        animation:"floatPillL 5s ease-in-out infinite 1s",
-        zIndex:3,
-        whiteSpace:"nowrap",
+        position:"absolute", right:2, top:"10%",
+        background:"#fff", borderRadius:12, padding:"8px 12px",
+        boxShadow:"0 3px 16px rgba(15,23,42,0.09)", border:"1px solid #E2E8F0",
+        display:"flex", alignItems:"center", gap:6,
+        animation:"floatT 5s ease-in-out infinite 1s", zIndex:3, whiteSpace:"nowrap",
       }}>
-        <CheckCircle size={12} color="#10B981" />
-        <span style={{ fontSize:11,fontWeight:600,color:"#334155" }}>Bank-Grade Security</span>
+        <ShieldCheck size={11} color="#2DB84B"/>
+        <span style={{ fontSize:11,fontWeight:600,color:"#334155",fontFamily:"'Inter',sans-serif" }}>Bank-Grade Security</span>
       </div>
     </div>
   );

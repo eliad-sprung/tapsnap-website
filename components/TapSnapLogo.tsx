@@ -1,96 +1,151 @@
 import React from "react";
 
+/**
+ * Official TapSnap logo — matched exactly to WhatsApp reference image.
+ *
+ * Icon: Card-slot shape open on right, inner card rectangle visible,
+ *       3 NFC arcs in green, frame in near-black (#1A1A1A).
+ * TAP:  Near-black (#1A1A1A), Inter 900, wide tracking
+ * SNAP: Green (#2DB84B), same weight/tracking
+ * Underline: Green bar under TAP (matches reference)
+ * Tagline: "PAYMENTS MADE SIMPLE" — shown when showTagline=true
+ */
+
+const BLACK = "#1A1A1A";
+const GREEN = "#2DB84B";
+
 interface LogoProps {
   variant?: "light" | "dark";
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   iconOnly?: boolean;
+  showTagline?: boolean;
 }
 
 const sizes = {
-  sm: { icon: 32, tapSize: 18, snapSize: 18, gap: 9 },
-  md: { icon: 40, tapSize: 22, snapSize: 22, gap: 11 },
-  lg: { icon: 52, tapSize: 30, snapSize: 30, gap: 14 },
+  xs: { icon: 24, iconH: 19, word: 14, gap: 8,  tagline: 7  },
+  sm: { icon: 32, iconH: 25, word: 19, gap: 10, tagline: 9  },
+  md: { icon: 44, iconH: 34, word: 26, gap: 13, tagline: 11 },
+  lg: { icon: 60, iconH: 47, word: 36, gap: 16, tagline: 14 },
 };
 
 export default function TapSnapLogo({
   variant = "light",
-  size = "md",
+  size = "sm",
   iconOnly = false,
+  showTagline = false,
 }: LogoProps) {
   const s = sizes[size];
-  const navyText   = variant === "dark" ? "#FFFFFF"  : "#0F172A";
-  const blueText   = variant === "dark" ? "#4A9AFF"  : "#0066FF";
-  const frameStroke = variant === "dark" ? "#FFFFFF"  : "#0F172A";
-  const arcOuter   = variant === "dark" ? "#4A9AFF"  : "#0066FF";
-  const arcInner   = variant === "dark" ? "#FFFFFF"  : "#0F172A";
+  const frameColor = variant === "dark" ? "#FFFFFF" : BLACK;
+  const tapColor   = variant === "dark" ? "#FFFFFF" : BLACK;
+  const snapColor  = GREEN; // always green
 
   return (
-    <div style={{ display: "inline-flex", alignItems: "center", gap: s.gap, lineHeight: 1 }}>
-      {/* ── Icon mark ── */}
-      <svg
-        width={s.icon}
-        height={s.icon}
-        viewBox="0 0 44 44"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-        style={{ flexShrink: 0, display: "block" }}
-      >
-        {/* Rounded rectangle device frame */}
-        <rect
-          x="2" y="2" width="40" height="40" rx="10"
-          stroke={frameStroke}
-          strokeWidth="2.5"
-          fill="none"
-        />
-        {/* Contactless signal arcs — left-to-right, centered vertically */}
-        {/* Inner arc */}
-        <path
-          d="M14 22 Q14 16 19 12.5"
-          fill="none" stroke={arcInner} strokeWidth="2.3" strokeLinecap="round"
-        />
-        <path
-          d="M14 22 Q14 28 19 31.5"
-          fill="none" stroke={arcInner} strokeWidth="2.3" strokeLinecap="round"
-        />
-        {/* Mid arc */}
-        <path
-          d="M20 22 Q20 14 26 9.5"
-          fill="none" stroke={arcOuter} strokeWidth="2.3" strokeLinecap="round"
-        />
-        <path
-          d="M20 22 Q20 30 26 34.5"
-          fill="none" stroke={arcOuter} strokeWidth="2.3" strokeLinecap="round"
-        />
-        {/* Outer arc */}
-        <path
-          d="M26 22 Q26 12 33 7"
-          fill="none" stroke={arcOuter} strokeWidth="2.3" strokeLinecap="round"
-          opacity="0.45"
-        />
-        <path
-          d="M26 22 Q26 32 33 37"
-          fill="none" stroke={arcOuter} strokeWidth="2.3" strokeLinecap="round"
-          opacity="0.45"
-        />
-      </svg>
+    <div style={{ display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 4 }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: s.gap, lineHeight: 1 }}>
 
-      {/* ── Wordmark ── */}
-      {!iconOnly && (
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "baseline",
-            fontFamily:
-              "'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif",
-            fontWeight: 800,
-            letterSpacing: "-0.025em",
-            lineHeight: 1,
-            userSelect: "none",
-          }}
+        {/* ── ICON MARK ──────────────────────────────────────────
+            ViewBox 110 × 86 — matches reference proportions.
+            Outer frame: card-slot open on right (3 sides).
+            Inner card: small rounded rect inside frame.
+            NFC arcs: 3 concentric arcs pointing right.
+        ─────────────────────────────────────────────────────── */}
+        <svg
+          width={s.icon}
+          height={s.iconH}
+          viewBox="0 0 110 86"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          style={{ display: "block", flexShrink: 0 }}
         >
-          <span style={{ fontSize: s.tapSize, color: navyText }}>TAP</span>
-          <span style={{ fontSize: s.snapSize, color: blueText }}>SNAP</span>
+          {/* Outer card-slot frame — open on right */}
+          <path
+            d="M 68 7 H 20 Q 6 7 6 20 V 66 Q 6 79 20 79 H 68"
+            stroke={frameColor}
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+          />
+          {/* Inner card rectangle — small, inside the frame */}
+          <rect
+            x="14" y="22" width="38" height="42" rx="6"
+            stroke={frameColor}
+            strokeWidth="5"
+            fill="none"
+          />
+          {/* NFC arc 1 — innermost */}
+          <path
+            d="M 62 34 A 14 14 0 0 1 62 52"
+            stroke={GREEN}
+            strokeWidth="6"
+            strokeLinecap="round"
+            fill="none"
+          />
+          {/* NFC arc 2 — mid */}
+          <path
+            d="M 73 25 A 24 24 0 0 1 73 61"
+            stroke={GREEN}
+            strokeWidth="6"
+            strokeLinecap="round"
+            fill="none"
+          />
+          {/* NFC arc 3 — outer, slightly faded */}
+          <path
+            d="M 84 16 A 34 34 0 0 1 84 70"
+            stroke={GREEN}
+            strokeWidth="6"
+            strokeLinecap="round"
+            fill="none"
+            opacity="0.5"
+          />
+        </svg>
+
+        {/* ── WORDMARK ── */}
+        {!iconOnly && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            <span
+              aria-label="TapSnap"
+              style={{
+                display: "inline-flex",
+                alignItems: "baseline",
+                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif",
+                fontSize: s.word,
+                fontWeight: 900,
+                letterSpacing: "0.06em",
+                lineHeight: 1,
+                userSelect: "none",
+              }}
+            >
+              <span style={{ color: tapColor }}>TAP</span>
+              <span style={{ color: snapColor }}>SNAP</span>
+            </span>
+            {/* Green underline — under TAP portion only, matching reference */}
+            <div style={{
+              height: Math.max(2, Math.round(s.word * 0.1)),
+              width: `${Math.round(s.word * 2.2)}px`,
+              background: GREEN,
+              borderRadius: 2,
+              marginTop: 1,
+            }} />
+          </div>
+        )}
+      </div>
+
+      {/* ── TAGLINE ── */}
+      {showTagline && !iconOnly && (
+        <span style={{
+          fontFamily: "'Inter', -apple-system, sans-serif",
+          fontSize: s.tagline,
+          fontWeight: 400,
+          letterSpacing: "0.28em",
+          color: variant === "dark" ? "rgba(255,255,255,0.55)" : "#6B7280",
+          textTransform: "uppercase",
+          userSelect: "none",
+          marginTop: 2,
+          paddingLeft: s.icon + s.gap,
+        }}>
+          Payments Made Simple
         </span>
       )}
     </div>
