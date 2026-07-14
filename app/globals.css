@@ -1,72 +1,203 @@
 @import "tailwindcss";
 
 :root {
-  --navy: #0B1628;
-  --navy-light: #111D35;
-  --navy-card: #0F1E38;
+  --navy: #0F172A;
+  --navy-mid: #1E3A8A;
+  --navy-light: #0066FF;
+  --royal: #0066FF;
+  --sky: #7EB2FF;
   --emerald: #10B981;
-  --emerald-dim: #0D9668;
-  --slate: #94A3B8;
-  --white: #F8FAFC;
+  --emerald-dim: #059669;
+  --slate: #334155;
+  --slate-light: #64748B;
+  --white: #FFFFFF;
+  --off-white: #F8FAFC;
+  --ice: #F1F5F9;
+  --ice-blue: #EEF3FF;
+  --border: #E2E8F0;
+  --border-blue: #CBD5E1;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--navy);
-  color: var(--white);
+  background: var(--white);
+  color: var(--slate);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.emerald-glow {
-  box-shadow: 0 0 40px rgba(16, 185, 129, 0.15);
+/* TapSnap Logo SVG Icon */
+.ts-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.card-glass {
-  background: rgba(15, 30, 56, 0.8);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(16, 185, 129, 0.12);
-}
+/* Gradient text */
+.text-royal { color: var(--royal); }
+.text-navy  { color: var(--navy); }
 
-.text-gradient {
-  background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero-grid {
-  background-image: 
-    linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-.announcement-bar {
-  background: linear-gradient(90deg, #0D9668, #10B981, #0D9668);
-  background-size: 200% 100%;
-  animation: shimmer 4s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
+/* Buttons */
 .btn-primary {
-  background: linear-gradient(135deg, #10B981, #0D9668);
-  transition: all 0.2s ease;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 13px 28px;
+  font-size: 15px;
+  transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: -0.01em;
 }
-
 .btn-primary:hover {
+  background: var(--navy-mid);
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 8px 28px rgba(15,23,42,0.18);
 }
 
-.accordion-content {
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 15px;
+  border: 1.5px solid var(--border-blue);
+  transition: border-color 0.18s, color 0.18s, transform 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+}
+.btn-outline:hover {
+  border-color: var(--navy-mid);
+  color: var(--navy-mid);
+  transform: translateY(-1px);
+}
+
+/* Cards */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+}
+.card:hover {
+  box-shadow: 0 8px 32px rgba(15,23,42,0.08);
+  transform: translateY(-2px);
+  border-color: var(--border-blue);
+}
+
+.card-ice {
+  background: var(--ice-blue);
+  border: 1px solid #DBEAFE;
+  border-radius: 16px;
+}
+
+/* Section spacing */
+.section { padding: 96px 0; }
+.section-sm { padding: 64px 0; }
+
+/* Emerald accent dot */
+.emerald-dot {
+  width: 8px; height: 8px;
+  background: var(--emerald);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Announcement bar */
+.announce {
+  background: var(--navy);
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  padding: 9px 16px;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+.announce a { color: var(--sky); text-decoration: none; font-weight: 600; }
+.announce a:hover { text-decoration: underline; }
+
+/* Nav */
+.nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.2s;
+}
+.nav-wrap.scrolled { box-shadow: 0 2px 16px rgba(15,23,42,0.06); }
+
+/* Hero */
+.hero-bg {
+  background: linear-gradient(160deg, #F8FAFF 0%, #F1F5F9 60%, #EEF3FF 100%);
+  position: relative;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+}
+.hero-grid-lines {
+  background-image:
+    linear-gradient(rgba(30,58,138,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,58,138,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Steps connector */
+.step-line {
+  position: absolute;
+  top: 28px;
+  left: calc(50% + 28px);
+  width: calc(100% - 56px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-blue), transparent);
+}
+
+/* Pill badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ice-blue);
+  color: var(--navy-mid);
+  border: 1px solid #BFDBFE;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Footer */
+.footer-bg {
+  background: var(--navy);
+}
+
+/* Scroll fade-up utility (JS-driven) */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .section { padding: 64px 0; }
+  .section-sm { padding: 40px 0; }
 }

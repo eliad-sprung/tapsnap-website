@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Zap } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import TapSnapLogo from "./TapSnapLogo";
 
 const navLinks = [
   { href: "/customers", label: "For Customers" },
@@ -18,68 +19,55 @@ export default function Navigation() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
 
   return (
-    <header
-      className="sticky top-0 z-50 transition-all duration-300"
-      style={{
-        background: scrolled
-          ? "rgba(11, 22, 40, 0.95)"
-          : "rgba(11, 22, 40, 0.6)",
-        backdropFilter: "blur(16px)",
-        borderBottom: scrolled
-          ? "1px solid rgba(16,185,129,0.15)"
-          : "1px solid transparent",
-      }}
-    >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <header className={`nav-wrap${scrolled ? " scrolled" : ""}`}>
+      <nav style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
+
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #10B981, #0D9668)" }}>
-              <Zap size={16} className="text-white" fill="white" />
-            </div>
-            <span className="text-white font-bold text-lg tracking-tight">
-              Tap<span className="text-gradient">Snap</span>
-            </span>
+          <Link href="/" style={{ textDecoration: "none", display: "flex" }}>
+            <TapSnapLogo size="sm" variant="light" />
           </Link>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+          {/* Desktop nav */}
+          <div style={{ display: "flex", alignItems: "center", gap: 32 }} className="desktop-nav">
+            {navLinks.map((l) => (
               <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium transition-colors duration-200"
+                key={l.href}
+                href={l.href}
                 style={{
-                  color: pathname === link.href ? "#10B981" : "#94A3B8",
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: pathname === l.href ? "#1E3A8A" : "#64748B",
+                  textDecoration: "none",
+                  transition: "color 0.15s",
+                  letterSpacing: "-0.01em",
+                  borderBottom: pathname === l.href ? "2px solid #10B981" : "2px solid transparent",
+                  paddingBottom: 2,
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#10B981")}
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color =
-                    pathname === link.href ? "#10B981" : "#94A3B8")
-                }
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#0F172A"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = pathname === l.href ? "#1E3A8A" : "#64748B"; }}
               >
-                {link.label}
+                {l.label}
               </Link>
             ))}
           </div>
 
           {/* CTA */}
-          <div className="hidden md:flex items-center gap-3">
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }} className="desktop-nav">
             <a
               href="https://portal.tap-snap.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary text-white text-sm font-semibold px-4 py-2 rounded-lg"
+              className="btn-primary"
+              style={{ padding: "9px 20px", fontSize: 14 }}
             >
               Merchant Portal
             </a>
@@ -87,41 +75,57 @@ export default function Navigation() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden text-slate-400 hover:text-white transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#334155", padding: 4 }}
+            className="mobile-toggle"
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile drawer */}
         {mobileOpen && (
-          <div
-            className="md:hidden pb-4 border-t mt-1 pt-4"
-            style={{ borderColor: "rgba(16,185,129,0.12)" }}
-          >
-            {navLinks.map((link) => (
+          <div style={{
+            borderTop: "1px solid #E2E8F0",
+            padding: "16px 0 20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}>
+            {navLinks.map((l) => (
               <Link
-                key={link.href}
-                href={link.href}
-                className="block py-3 text-sm font-medium transition-colors"
-                style={{ color: pathname === link.href ? "#10B981" : "#94A3B8" }}
+                key={l.href}
+                href={l.href}
+                style={{
+                  fontSize: 15,
+                  fontWeight: 500,
+                  color: pathname === l.href ? "#1E3A8A" : "#334155",
+                  textDecoration: "none",
+                  padding: "10px 4px",
+                  display: "block",
+                }}
               >
-                {link.label}
+                {l.label}
               </Link>
             ))}
             <a
               href="https://portal.tap-snap.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary text-white text-sm font-semibold px-4 py-2.5 rounded-lg mt-3 block text-center"
+              className="btn-primary"
+              style={{ marginTop: 8, justifyContent: "center" }}
             >
               Merchant Portal
             </a>
           </div>
         )}
       </nav>
+
+      <style>{`
+        @media (min-width: 768px) { .mobile-toggle { display: none !important; } }
+        @media (max-width: 767px) { .desktop-nav { display: none !important; } }
+      `}</style>
     </header>
   );
 }

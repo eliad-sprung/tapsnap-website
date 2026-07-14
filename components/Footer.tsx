@@ -1,76 +1,87 @@
+"use client";
+
 import Link from "next/link";
-import { Zap, Mail } from "lucide-react";
+import { Mail, Globe } from "lucide-react";
+import TapSnapLogo from "./TapSnapLogo";
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#060E1C", borderTop: "1px solid rgba(16,185,129,0.1)" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+    <footer className="footer-bg">
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "64px 24px 40px" }}>
+
+        {/* Top grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 48, marginBottom: 48 }}>
+
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #10B981, #0D9668)" }}>
-                <Zap size={16} className="text-white" fill="white" />
-              </div>
-              <span className="text-white font-bold text-lg tracking-tight">
-                Tap<span className="text-gradient">Snap</span>
-              </span>
-            </div>
-            <p className="text-sm leading-relaxed" style={{ color: "#64748B" }}>
+            <TapSnapLogo size="sm" variant="dark" />
+            <p style={{ marginTop: 16, fontSize: 13, lineHeight: 1.7, color: "rgba(255,255,255,0.45)", maxWidth: 220 }}>
               Non-custodial digital wallet technology for modern commerce.
             </p>
-          </div>
-
-          {/* Links */}
-          <div>
-            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-widest" style={{ color: "#10B981" }}>Platform</h4>
-            <div className="space-y-3">
-              {[
-                { href: "/customers", label: "For Customers" },
-                { href: "/merchants", label: "For Merchants" },
-                { href: "/how-it-works", label: "How It Works" },
-                { href: "/faqs", label: "FAQs" },
-              ].map((l) => (
-                <Link key={l.href} href={l.href} className="block text-sm transition-colors hover:text-white" style={{ color: "#64748B" }}>
-                  {l.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Legal & Contact */}
-          <div>
-            <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-widest" style={{ color: "#10B981" }}>Legal & Support</h4>
-            <div className="space-y-3">
-              <Link href="/terms" className="block text-sm transition-colors hover:text-white" style={{ color: "#64748B" }}>Terms of Service</Link>
-              <Link href="/privacy" className="block text-sm transition-colors hover:text-white" style={{ color: "#64748B" }}>Privacy Policy</Link>
-              <a href="mailto:support@tap-snap.com" className="flex items-center gap-2 text-sm transition-colors hover:text-white" style={{ color: "#64748B" }}>
-                <Mail size={14} />
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 20 }}>
+              <a href="mailto:support@tap-snap.com" style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "rgba(255,255,255,0.55)", textDecoration: "none" }}>
+                <Mail size={13} />
                 support@tap-snap.com
               </a>
+              <a href="https://tap-snap.com" style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "rgba(255,255,255,0.55)", textDecoration: "none" }}>
+                <Globe size={13} />
+                tap-snap.com
+              </a>
             </div>
+          </div>
+
+          {/* Platform */}
+          <div>
+            <p style={{ fontSize: 11, fontWeight: 600, color: "#10B981", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Platform</p>
+            {[
+              { href: "/customers", label: "For Customers" },
+              { href: "/merchants", label: "For Merchants" },
+              { href: "/how-it-works", label: "How It Works" },
+              { href: "/faqs", label: "FAQs" },
+            ].map((l) => (
+              <Link key={l.href} href={l.href} style={{ display: "block", fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none", marginBottom: 10, transition: "color 0.15s" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.45)"; }}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Legal */}
+          <div>
+            <p style={{ fontSize: 11, fontWeight: 600, color: "#10B981", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Legal</p>
+            {[
+              { href: "/terms", label: "Terms of Service" },
+              { href: "/privacy", label: "Privacy Policy" },
+            ].map((l) => (
+              <Link key={l.href} href={l.href} style={{ display: "block", fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none", marginBottom: 10, transition: "color 0.15s" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.45)"; }}
+              >
+                {l.label}
+              </Link>
+            ))}
+            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", marginTop: 8 }}>TapSnap Technology LLC<br />Wyoming, USA</p>
           </div>
         </div>
 
         {/* Divider */}
-        <div className="border-t mb-8" style={{ borderColor: "rgba(16,185,129,0.08)" }} />
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 32 }}>
 
-        {/* Legal Disclaimer */}
-        <div className="rounded-xl p-5 mb-8" style={{ background: "rgba(16,185,129,0.04)", border: "1px solid rgba(16,185,129,0.08)" }}>
-          <p className="text-xs leading-relaxed" style={{ color: "#475569" }}>
-            <strong className="font-semibold" style={{ color: "#64748B" }}>Legal Notice: </strong>
-            TapSnap operates as a non-custodial software technology provider and digital wallet platform. Funds loaded into TapSnap balances are held separately through regulated banking and payment partners. TapSnap is not a depository bank or money transmitter, and no raw cardholder data is stored or processed on local point-of-sale hardware.
-          </p>
-        </div>
+          {/* Legal disclaimer */}
+          <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 10, padding: "16px 20px", marginBottom: 24, borderLeft: "3px solid #10B981" }}>
+            <p style={{ fontSize: 11, lineHeight: 1.7, color: "rgba(255,255,255,0.35)", margin: 0 }}>
+              <strong style={{ color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>Legal Notice: </strong>
+              TapSnap operates as a non-custodial software technology provider and digital wallet platform. Funds loaded into TapSnap balances are held separately through regulated banking and payment partners. TapSnap is not a depository bank or money transmitter, and no raw cardholder data is stored or processed on local point-of-sale hardware.
+            </p>
+          </div>
 
-        {/* Copyright bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs" style={{ color: "#334155" }}>
-            © 2026 TapSnap Technology LLC. All rights reserved.
-          </p>
-          <p className="text-xs" style={{ color: "#334155" }}>
-            TapSnap Technology LLC · Wyoming, USA
-          </p>
+          {/* Copyright */}
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", margin: 0 }}>© 2026 TapSnap. All rights reserved.</p>
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.2)", margin: 0 }}>TapSnap Technology LLC · Wyoming, USA</p>
+          </div>
         </div>
       </div>
     </footer>
