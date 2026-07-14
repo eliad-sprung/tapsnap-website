@@ -1,8 +1,8 @@
 "use client";
-
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -16,37 +16,30 @@ function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 }
 
 const faqs = [
-  { q:"Is TapSnap a bank or money transmitter?",                                   a:"No. TapSnap is a non-custodial software technology provider. We do not hold, transmit, or custody funds directly. Customer balances are held through regulated banking and payment partners, not by TapSnap. We are a technology layer — not a financial institution." },
-  { q:"What does 'non-custodial' mean for my funds?",                              a:"Non-custodial means TapSnap never takes ownership of your money. Your loaded balance is held in a segregated account at a regulated banking partner. TapSnap's software facilitates the transaction authorization, but the funds themselves are always under the control of a licensed, regulated institution." },
-  { q:"Is my card or bank information stored on merchant point-of-sale devices?",  a:"Never. TapSnap's architecture ensures that no raw cardholder data is stored or processed on local point-of-sale hardware. Every transaction uses a tokenized QR identifier valid for a single transaction only. The merchant's device never sees your account details." },
-  { q:"How quickly do merchants receive their payouts?",                            a:"Merchants receive daily automated ACH payouts. Each evening, TapSnap batches all settled transactions and initiates transfers to the merchant's registered business bank account. Funds typically arrive by the next business day." },
-  { q:"Why do I see 'TAPSNAP LLC' on my bank statement?",                          a:"When you load funds into your TapSnap wallet via ACH or debit card, the transaction is initiated by TapSnap Technology LLC. This is a legitimate charge. If you have a question about a specific charge, please email support@tap-snap.com with the date and amount." },
-  { q:"Which digital wallets are supported?",                                       a:"TapSnap digital passes are compatible with Apple Wallet (iPhone and Apple Watch) and Google Wallet (Android). Once your account is funded, you can add your TapSnap pass to either wallet with a single tap." },
-  { q:"How does TapSnap verify that a merchant is properly licensed?",              a:"TapSnap performs real-time license verification at the time of every transaction. Before authorizing a payment, our system checks the merchant's current license status against state regulatory databases. If a license has expired or been revoked, the transaction is blocked automatically." },
-  { q:"How do I get support if I have a problem?",                                 a:"For all support inquiries, email support@tap-snap.com. Our team responds within one business day. Please include your account email, the date and amount of any relevant transaction, and a brief description of your question." },
+  { q:"Is TapSnap a bank?",                              a:"No. TapSnap is a technology platform. Your funds are held by regulated banking partners — not by us." },
+  { q:"What does non-custodial mean?",                   a:"We never hold your money. It stays in a segregated account at a licensed banking institution at all times." },
+  { q:"Is my card data stored at the merchant?",        a:"Never. The merchant only sees a one-time token. Your account details stay completely private." },
+  { q:"How fast do merchants get paid?",                 a:"Every business day. We batch the previous day's transactions and ACH to the merchant's bank overnight." },
+  { q:"Why do I see TAPSNAP LLC on my statement?",      a:"That's our legal entity name and it means a legitimate wallet load was processed. Questions? Email support@tap-snap.com." },
+  { q:"Which wallets are supported?",                    a:"Apple Wallet and Google Wallet. Add your TapSnap pass with one tap — no extra app needed." },
+  { q:"How are merchant licenses verified?",            a:"Automatically, on every single transaction. Expired or revoked license? The payment is blocked instantly." },
+  { q:"How do I get help?",                             a:"Email support@tap-snap.com. We respond within one business day, usually faster." },
 ];
 
-function AccordionItem({ faq, index }: { faq: { q: string; a: string }; index: number }) {
+function Item({ faq, i }: { faq:{q:string;a:string}; i:number }) {
   const [open, setOpen] = useState(false);
   return (
-    <FadeUp delay={index * 45}>
-      <div style={{
-        border:`1px solid ${open ? "#BFDBFE" : "#E2E8F0"}`,
-        borderRadius:14, overflow:"hidden", background:"#fff",
-        transition:"border-color 0.2s",
-      }}>
-        <button onClick={() => setOpen(!open)} style={{
-          width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between",
-          padding:"20px 22px", background:"none", border:"none", cursor:"pointer", textAlign:"left", gap:14,
-        }}>
-          <span style={{ fontSize:15, fontWeight:600, color:"#0F172A", lineHeight:1.4, fontFamily:"'Inter',sans-serif" }}>{faq.q}</span>
-          <ChevronDown size={17} color="#64748B" style={{ flexShrink:0, transform:open?"rotate(180deg)":"rotate(0)", transition:"transform 0.25s" }} />
+    <FadeUp delay={i * 40}>
+      <div style={{ border:`1px solid ${open?"#A7F3D0":"#E2E8F0"}`, borderRadius:14, overflow:"hidden", background:"#fff", transition:"border-color 0.2s" }}>
+        <button onClick={() => setOpen(!open)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", padding:"18px 20px", background:"none", border:"none", cursor:"pointer", textAlign:"left", gap:14 }}>
+          <span style={{ fontSize:15, fontWeight:600, color:"#1A1A1A", lineHeight:1.4, fontFamily:"'Inter',sans-serif" }}>{faq.q}</span>
+          <ChevronDown size={17} color="#64748B" style={{ flexShrink:0, transform:open?"rotate(180deg)":"rotate(0)", transition:"transform 0.25s" }}/>
         </button>
         <AnimatePresence>
           {open && (
             <motion.div initial={{ height:0, opacity:0 }} animate={{ height:"auto", opacity:1 }} exit={{ height:0, opacity:0 }} transition={{ duration:0.22 }}>
-              <div style={{ padding:"0 22px 20px", borderTop:"1px solid #F1F5F9" }}>
-                <p style={{ fontSize:14, color:"#64748B", lineHeight:1.75, paddingTop:14 }}>{faq.a}</p>
+              <div style={{ padding:"0 20px 18px", borderTop:"1px solid #F1F5F9" }}>
+                <p style={{ fontSize:14, color:"#64748B", lineHeight:1.7, paddingTop:12 }}>{faq.a}</p>
               </div>
             </motion.div>
           )}
@@ -59,32 +52,23 @@ function AccordionItem({ faq, index }: { faq: { q: string; a: string }; index: n
 export default function FAQsPage() {
   return (
     <>
-      <section style={{ background:"#fff", padding:"80px 0 72px" }}>
+      <section style={{ background:"#fff", padding:"72px 0 60px" }}>
         <div className="container" style={{ textAlign:"center" }}>
-          <span className="badge"><span className="emerald-dot" />FAQs</span>
-          <h1 style={{ marginBottom:16 }}>Common <span style={{ color:"#2DB84B" }}>questions</span></h1>
-          <p style={{ fontSize:16, color:"#64748B", maxWidth:440, margin:"0 auto", lineHeight:1.75 }}>
-            Everything you need to know about TapSnap — for customers and merchants alike.
-          </p>
+          <span className="badge"><span className="emerald-dot"/>FAQs</span>
+          <h1 style={{ marginBottom:14 }}>Quick <span style={{ color:"#2DB84B" }}>answers.</span></h1>
+          <p style={{ fontSize:16, color:"#64748B", maxWidth:360, margin:"0 auto" }}>Everything you need. Nothing extra.</p>
         </div>
       </section>
-
       <section className="section-soft">
         <div className="container">
-          <div style={{ maxWidth:680, margin:"0 auto", display:"flex", flexDirection:"column", gap:8 }}>
-            {faqs.map((faq, i) => <AccordionItem key={i} faq={faq} index={i} />)}
-
-            <FadeUp delay={380}>
-              <div className="cta-band" style={{ marginTop:12 }}>
-                <div style={{ position:"absolute", top:-50, right:-50, width:180, height:180, borderRadius:"50%", background:"rgba(0,102,255,0.12)", pointerEvents:"none" }} />
+          <div style={{ maxWidth:640, margin:"0 auto", display:"flex", flexDirection:"column", gap:8 }}>
+            {faqs.map((f, i) => <Item key={i} faq={f} i={i}/>)}
+            <FadeUp delay={340}>
+              <div className="cta-band" style={{ marginTop:10 }}>
+                <div style={{ position:"absolute", top:-50, right:-50, width:160, height:160, borderRadius:"50%", background:"rgba(45,184,75,0.12)", pointerEvents:"none" }}/>
                 <div style={{ position:"relative" }}>
                   <h3 style={{ fontSize:20, color:"#fff", marginBottom:8 }}>Still have a question?</h3>
-                  <p style={{ fontSize:14, color:"rgba(255,255,255,0.5)", marginBottom:22 }}>Our support team responds within one business day.</p>
-                  <a href="mailto:support@tap-snap.com" style={{
-                    display:"inline-flex", alignItems:"center", gap:7,
-                    background:"#fff", color:"#0F172A", fontWeight:700, fontFamily:"'Inter',sans-serif",
-                    borderRadius:10, padding:"11px 22px", fontSize:14, textDecoration:"none",
-                  }}>
+                  <a href="mailto:support@tap-snap.com" style={{ display:"inline-flex", alignItems:"center", gap:7, background:"#fff", color:"#1A1A1A", fontWeight:700, fontFamily:"'Inter',sans-serif", borderRadius:10, padding:"11px 22px", fontSize:14, textDecoration:"none" }}>
                     Email support@tap-snap.com
                   </a>
                 </div>

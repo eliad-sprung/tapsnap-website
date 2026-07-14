@@ -26,14 +26,14 @@ export default function Navigation() {
   useEffect(() => { setMobileOpen(false); }, [pathname]);
 
   const linkColor  = (href: string) => pathname === href ? "#1A1A1A" : "#64748B";
-  const linkBorder = (href: string) => pathname === href ? `2px solid #2DB84B` : "2px solid transparent";
+  const linkBorder = (href: string) => pathname === href ? "2px solid #2DB84B" : "2px solid transparent";
 
   return (
     <header className={`nav-wrap${scrolled ? " scrolled" : ""}`}>
       <nav className="container">
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", height:64 }}>
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", height:68 }}>
 
-          {/* Logo — with underline, no tagline in nav */}
+          {/* Real PNG logo */}
           <Link href="/" style={{ textDecoration:"none", display:"flex", alignItems:"center" }}>
             <TapSnapLogo size="sm" variant="light" />
           </Link>
@@ -45,18 +45,16 @@ export default function Navigation() {
                 key={l.href}
                 href={l.href}
                 style={{
-                  fontSize: 13.5,
-                  fontWeight: 500,
-                  fontFamily: "'Inter', sans-serif",
+                  fontSize:13.5, fontWeight:500, fontFamily:"'Inter',sans-serif",
                   color: linkColor(l.href),
-                  textDecoration: "none",
-                  letterSpacing: "0.01em",
+                  textDecoration:"none",
+                  letterSpacing:"0.01em",
                   borderBottom: linkBorder(l.href),
-                  paddingBottom: 2,
-                  transition: "color 0.15s",
+                  paddingBottom:2,
+                  transition:"color 0.15s",
                 }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#1A1A1A"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = linkColor(l.href); }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color="#1A1A1A"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color=linkColor(l.href); }}
               >
                 {l.label}
               </Link>
@@ -65,7 +63,7 @@ export default function Navigation() {
 
           {/* CTA */}
           <div className="d-nav">
-            <Link href="/customers" className="btn-green" style={{ padding:"9px 20px", fontSize:13 }}>
+            <Link href="/customers" className="btn-green" style={{ padding:"10px 20px", fontSize:13 }}>
               Get Started
             </Link>
           </div>
@@ -77,7 +75,7 @@ export default function Navigation() {
             style={{ background:"none", border:"none", cursor:"pointer", color:"#334155", padding:4, display:"none" }}
             aria-label="Toggle menu"
           >
-            {mobileOpen ? <X size={21}/> : <Menu size={21}/>}
+            {mobileOpen ? <X size={22}/> : <Menu size={22}/>}
           </button>
         </div>
 

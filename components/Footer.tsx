@@ -5,7 +5,7 @@ import { Mail, Globe } from "lucide-react";
 import TapSnapLogo from "./TapSnapLogo";
 
 const muted: React.CSSProperties = {
-  display:"block", fontSize:13, color:"rgba(255,255,255,0.4)",
+  display:"block", fontSize:13, color:"rgba(255,255,255,0.42)",
   textDecoration:"none", marginBottom:9, fontFamily:"'Inter',sans-serif",
   transition:"color 0.15s",
 };
@@ -27,12 +27,11 @@ export default function Footer() {
   return (
     <footer className="footer-bg">
       <div className="container" style={{ padding:"60px 24px 36px" }}>
-
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(180px, 1fr))", gap:40, marginBottom:44 }}>
 
-          {/* Brand */}
+          {/* Brand — PNG logo inverted for dark bg */}
           <div>
-            <TapSnapLogo size="sm" variant="dark" showTagline={false} />
+            <TapSnapLogo size="sm" variant="dark" />
             <p style={{ marginTop:14, fontSize:13, lineHeight:1.7, color:"rgba(255,255,255,0.36)", maxWidth:200, fontFamily:"'Inter',sans-serif" }}>
               Non-custodial digital wallet technology for modern commerce.
             </p>
@@ -56,8 +55,8 @@ export default function Footer() {
                   key={l.href}
                   href={l.href}
                   style={muted}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color="rgba(255,255,255,0.78)"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color="rgba(255,255,255,0.4)"; }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color="rgba(255,255,255,0.8)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color="rgba(255,255,255,0.42)"; }}
                 >
                   {l.label}
                 </Link>
@@ -67,10 +66,10 @@ export default function Footer() {
         </div>
 
         <div style={{ borderTop:"1px solid rgba(255,255,255,0.07)", paddingTop:26 }}>
-          <div style={{ borderLeft:"3px solid #2DB84B", paddingLeft:15, marginBottom:20, background:"rgba(255,255,255,0.02)", borderRadius:"0 8px 8px 0", padding:"13px 15px" }}>
+          <div style={{ borderLeft:"3px solid #2DB84B", padding:"13px 15px", marginBottom:20, background:"rgba(255,255,255,0.02)", borderRadius:"0 8px 8px 0" }}>
             <p style={{ fontSize:11, lineHeight:1.75, color:"rgba(255,255,255,0.3)", fontFamily:"'Inter',sans-serif" }}>
               <strong style={{ color:"rgba(255,255,255,0.46)", fontWeight:600 }}>Legal Notice: </strong>
-              TapSnap operates as a non-custodial software technology provider and digital wallet platform. Funds loaded into TapSnap balances are held separately through regulated banking and payment partners. TapSnap is not a depository bank or money transmitter, and no raw cardholder data is stored or processed on local point-of-sale hardware.
+              TapSnap operates as a non-custodial software technology provider and digital wallet platform. Funds are held through regulated banking and payment partners. TapSnap is not a depository bank or money transmitter, and no raw cardholder data is stored on point-of-sale hardware.
             </p>
           </div>
           <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"space-between", alignItems:"center", gap:10 }}>
