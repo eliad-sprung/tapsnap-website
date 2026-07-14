@@ -33,7 +33,6 @@ export default function Footer() {
           <div>
             <TapSnapLogo size="md" variant="dark" />
             <p style={{ marginTop:14, fontSize:13, lineHeight:1.7, color:"rgba(255,255,255,0.36)", maxWidth:200, fontFamily:"'Inter',sans-serif" }}>
-              Non-custodial digital wallet technology for modern commerce.
             </p>
             <div style={{ marginTop:16, display:"flex", flexDirection:"column", gap:7 }}>
               <a href="mailto:support@tap-snap.com" style={{ ...muted, display:"flex", alignItems:"center", gap:7 }}>
