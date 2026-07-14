@@ -1,14 +1,14 @@
 import React from "react";
 
 /**
- * Official TapSnap logo — matched exactly to WhatsApp reference image.
+ * TapSnap Logo — pixel-matched to official brand guide + WhatsApp reference.
  *
- * Icon: Card-slot shape open on right, inner card rectangle visible,
- *       3 NFC arcs in green, frame in near-black (#1A1A1A).
- * TAP:  Near-black (#1A1A1A), Inter 900, wide tracking
- * SNAP: Green (#2DB84B), same weight/tracking
- * Underline: Green bar under TAP (matches reference)
- * Tagline: "PAYMENTS MADE SIMPLE" — shown when showTagline=true
+ * Icon: Landscape card shape, open on right (3-sided frame),
+ *       small inner rounded rect, 3 NFC arcs pointing right.
+ * TAP:  #1A1A1A near-black, Inter 900
+ * SNAP: #2DB84B green, Inter 900
+ * No underline in horizontal/nav lockup.
+ * showTagline: "PAYMENTS MADE SIMPLE" for hero/stacked use.
  */
 
 const BLACK = "#1A1A1A";
@@ -21,11 +21,12 @@ interface LogoProps {
   showTagline?: boolean;
 }
 
+// Icon is landscape: width > height (matches card shape)
 const sizes = {
-  xs: { icon: 24, iconH: 19, word: 14, gap: 8,  tagline: 7  },
-  sm: { icon: 32, iconH: 25, word: 19, gap: 10, tagline: 9  },
-  md: { icon: 44, iconH: 34, word: 26, gap: 13, tagline: 11 },
-  lg: { icon: 60, iconH: 47, word: 36, gap: 16, tagline: 14 },
+  xs: { w: 28,  h: 22,  word: 13, gap: 7  },
+  sm: { w: 38,  h: 30,  word: 18, gap: 10 },
+  md: { w: 52,  h: 41,  word: 24, gap: 13 },
+  lg: { w: 70,  h: 55,  word: 32, gap: 16 },
 };
 
 export default function TapSnapLogo({
@@ -37,116 +38,128 @@ export default function TapSnapLogo({
   const s = sizes[size];
   const frameColor = variant === "dark" ? "#FFFFFF" : BLACK;
   const tapColor   = variant === "dark" ? "#FFFFFF" : BLACK;
-  const snapColor  = GREEN; // always green
 
   return (
-    <div style={{ display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 4 }}>
-      <div style={{ display: "inline-flex", alignItems: "center", gap: s.gap, lineHeight: 1 }}>
+    <div style={{
+      display: "inline-flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      lineHeight: 1,
+    }}>
+      {/* Horizontal lockup */}
+      <div style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: s.gap,
+      }}>
 
-        {/* ── ICON MARK ──────────────────────────────────────────
-            ViewBox 110 × 86 — matches reference proportions.
-            Outer frame: card-slot open on right (3 sides).
-            Inner card: small rounded rect inside frame.
-            NFC arcs: 3 concentric arcs pointing right.
+        {/* ── ICON ──────────────────────────────────────────────
+            ViewBox: 0 0 130 100
+            Card frame: landscape rectangle open on right side.
+            Inner rect: smaller card inside, showing it's a reader.
+            Arcs: 3 NFC arcs on the right, pointing outward.
         ─────────────────────────────────────────────────────── */}
         <svg
-          width={s.icon}
-          height={s.iconH}
-          viewBox="0 0 110 86"
+          width={s.w}
+          height={s.h}
+          viewBox="0 0 130 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
           style={{ display: "block", flexShrink: 0 }}
         >
-          {/* Outer card-slot frame — open on right */}
+          {/* Outer frame — 3 sides, open on right */}
           <path
-            d="M 68 7 H 20 Q 6 7 6 20 V 66 Q 6 79 20 79 H 68"
+            d="M 78 8 H 22 Q 8 8 8 22 V 78 Q 8 92 22 92 H 78"
             stroke={frameColor}
-            strokeWidth="8"
+            strokeWidth="9"
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
           />
-          {/* Inner card rectangle — small, inside the frame */}
+          {/* Inner card — small rounded rect */}
           <rect
-            x="14" y="22" width="38" height="42" rx="6"
+            x="18" y="25"
+            width="44" height="50"
+            rx="7"
             stroke={frameColor}
-            strokeWidth="5"
+            strokeWidth="6"
             fill="none"
           />
           {/* NFC arc 1 — innermost */}
           <path
-            d="M 62 34 A 14 14 0 0 1 62 52"
+            d="M 74 38 A 17 17 0 0 1 74 62"
             stroke={GREEN}
-            strokeWidth="6"
+            strokeWidth="7.5"
             strokeLinecap="round"
             fill="none"
           />
           {/* NFC arc 2 — mid */}
           <path
-            d="M 73 25 A 24 24 0 0 1 73 61"
+            d="M 88 27 A 29 29 0 0 1 88 73"
             stroke={GREEN}
-            strokeWidth="6"
+            strokeWidth="7.5"
             strokeLinecap="round"
             fill="none"
           />
-          {/* NFC arc 3 — outer, slightly faded */}
+          {/* NFC arc 3 — outer, faded */}
           <path
-            d="M 84 16 A 34 34 0 0 1 84 70"
+            d="M 102 16 A 41 41 0 0 1 102 84"
             stroke={GREEN}
-            strokeWidth="6"
+            strokeWidth="7.5"
             strokeLinecap="round"
             fill="none"
-            opacity="0.5"
+            opacity="0.45"
           />
         </svg>
 
         {/* ── WORDMARK ── */}
         {!iconOnly && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-            <span
-              aria-label="TapSnap"
-              style={{
-                display: "inline-flex",
-                alignItems: "baseline",
-                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif",
-                fontSize: s.word,
-                fontWeight: 900,
-                letterSpacing: "0.06em",
-                lineHeight: 1,
-                userSelect: "none",
-              }}
-            >
-              <span style={{ color: tapColor }}>TAP</span>
-              <span style={{ color: snapColor }}>SNAP</span>
-            </span>
-            {/* Green underline — under TAP portion only, matching reference */}
-            <div style={{
-              height: Math.max(2, Math.round(s.word * 0.1)),
-              width: `${Math.round(s.word * 2.2)}px`,
-              background: GREEN,
-              borderRadius: 2,
-              marginTop: 1,
-            }} />
-          </div>
+          <span
+            aria-label="TapSnap"
+            style={{
+              display: "inline-block",
+              fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif",
+              fontSize: s.word,
+              fontWeight: 900,
+              letterSpacing: "0.05em",
+              lineHeight: 1,
+              userSelect: "none",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <span style={{ color: tapColor }}>TAP</span>
+            <span style={{ color: GREEN }}>SNAP</span>
+          </span>
         )}
       </div>
 
-      {/* ── TAGLINE ── */}
+      {/* ── TAGLINE — only when requested ── */}
       {showTagline && !iconOnly && (
-        <span style={{
-          fontFamily: "'Inter', -apple-system, sans-serif",
-          fontSize: s.tagline,
-          fontWeight: 400,
-          letterSpacing: "0.28em",
-          color: variant === "dark" ? "rgba(255,255,255,0.55)" : "#6B7280",
-          textTransform: "uppercase",
-          userSelect: "none",
-          marginTop: 2,
-          paddingLeft: s.icon + s.gap,
-        }}>
-          Payments Made Simple
-        </span>
+        <div style={{ marginTop: Math.round(s.word * 0.35) }}>
+          {/* Green underline bar — sits under wordmark for stacked version */}
+          <div style={{
+            height: Math.max(2, Math.round(s.word * 0.09)),
+            width: Math.round(s.word * 2.8),
+            background: GREEN,
+            borderRadius: 2,
+            marginLeft: s.w + s.gap,
+            marginBottom: Math.round(s.word * 0.3),
+          }} />
+          <span style={{
+            display: "block",
+            fontFamily: "'Inter', -apple-system, sans-serif",
+            fontSize: Math.round(s.word * 0.44),
+            fontWeight: 400,
+            letterSpacing: "0.26em",
+            color: variant === "dark" ? "rgba(255,255,255,0.5)" : "#9CA3AF",
+            textTransform: "uppercase",
+            userSelect: "none",
+            paddingLeft: s.w + s.gap,
+          }}>
+            Payments Made Simple
+          </span>
+        </div>
       )}
     </div>
   );
