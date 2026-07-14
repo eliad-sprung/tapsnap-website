@@ -31,7 +31,7 @@ export default function Footer() {
 
           {/* Brand — PNG logo inverted for dark bg */}
           <div>
-            <TapSnapLogo size="sm" variant="dark" />
+            <TapSnapLogo size="md" variant="dark" />
             <p style={{ marginTop:14, fontSize:13, lineHeight:1.7, color:"rgba(255,255,255,0.36)", maxWidth:200, fontFamily:"'Inter',sans-serif" }}>
               Non-custodial digital wallet technology for modern commerce.
             </p>

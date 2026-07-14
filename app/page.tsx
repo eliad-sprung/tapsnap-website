@@ -37,14 +37,14 @@ export default function HomePage() {
         <div className="container" style={{ padding:"72px 24px", width:"100%" }}>
           <div className="grid-2">
             <div>
-              {/* Official logo PNG — large, with tagline baked in */}
+              {/* Official logo — wordmark only, no tagline (headline says it) */}
               <div style={{ marginBottom: 24 }}>
                 <Image
-                  src="/logo-large.png"
-                  alt="TapSnap — Payments Made Simple"
-                  width={420}
-                  height={106}
-                  style={{ width: 280, height: "auto" }}
+                  src="/logo-wordmark.png"
+                  alt="TapSnap"
+                  width={1184}
+                  height={210}
+                  style={{ width: 260, height: "auto" }}
                   priority
                 />
               </div>

@@ -31,11 +31,11 @@ export default function Navigation() {
   return (
     <header className={`nav-wrap${scrolled ? " scrolled" : ""}`}>
       <nav className="container">
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", height:68 }}>
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", height:72 }}>
 
           {/* Real PNG logo */}
           <Link href="/" style={{ textDecoration:"none", display:"flex", alignItems:"center" }}>
-            <TapSnapLogo size="sm" variant="light" />
+            <TapSnapLogo size="md" variant="light" />
           </Link>
 
           {/* Desktop links */}
