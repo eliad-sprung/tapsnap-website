@@ -107,8 +107,14 @@ function BalanceCard() {
         </div>
         {/* mini brand mark */}
         <div style={{ background:"rgba(255,255,255,0.1)", borderRadius:7, padding:"4px 8px", display:"flex", alignItems:"center", gap:3 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo@2x.png" alt="TapSnap" style={{ height:20, width:"auto", filter:"brightness(0) invert(1)", display:"block" }} />
+          <svg width="18" height="14" viewBox="0 0 110 86" fill="none">
+            <path d="M 68 7 H 20 Q 6 7 6 20 V 66 Q 6 79 20 79 H 68" stroke="white" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            <rect x="14" y="22" width="38" height="42" rx="6" stroke="white" strokeWidth="5" fill="none"/>
+            <path d="M 62 34 A 14 14 0 0 1 62 52" stroke="#2DB84B" strokeWidth="6" strokeLinecap="round" fill="none"/>
+            <path d="M 73 25 A 24 24 0 0 1 73 61" stroke="#2DB84B" strokeWidth="6" strokeLinecap="round" fill="none"/>
+          </svg>
+          <span style={{ fontSize:8, fontWeight:800, color:"#fff" }}>TAP</span>
+          <span style={{ fontSize:8, fontWeight:800, color:"#2DB84B" }}>SNAP</span>
         </div>
       </div>
     </div>
@@ -221,8 +227,16 @@ export default function HeroPhone() {
 
         {/* App header */}
         <div style={{ padding:"3px 13px 13px", display:"flex", alignItems:"center", gap:7 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo@2x.png" alt="TapSnap" style={{ height:24, width:"auto", filter:"brightness(0) invert(1)", display:"block" }} />
+          <svg width="26" height="20" viewBox="0 0 110 86" fill="none">
+            <path d="M 68 7 H 20 Q 6 7 6 20 V 66 Q 6 79 20 79 H 68" stroke="white" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            <rect x="14" y="22" width="38" height="42" rx="6" stroke="white" strokeWidth="5" fill="none"/>
+            <path d="M 62 34 A 14 14 0 0 1 62 52" stroke="#2DB84B" strokeWidth="6" strokeLinecap="round" fill="none"/>
+            <path d="M 73 25 A 24 24 0 0 1 73 61" stroke="#2DB84B" strokeWidth="6" strokeLinecap="round" fill="none"/>
+            <path d="M 84 16 A 34 34 0 0 1 84 70" stroke="#2DB84B" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.5"/>
+          </svg>
+          <span style={{ fontSize:13, fontWeight:800, letterSpacing:"-0.02em", color:"#fff" }}>
+            TAP<span style={{ color:"#2DB84B" }}>SNAP</span>
+          </span>
         </div>
 
         <BalanceCard />
